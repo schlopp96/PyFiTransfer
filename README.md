@@ -25,7 +25,7 @@
    - Example:
      - You would enter (without the quotations) `"exe"` when prompted for an `".exe"` file-type.
 
-5. If everything is correctly validated, a success message is returned to the console, alongside a list of files that were successfully transferred, assuming all goes well
+5. If everything is correctly validated, a success message is returned to the console, alongside a list of files that were successfully transferred.
 
    - If an error occurs, the program will display an error message before exiting.
 
