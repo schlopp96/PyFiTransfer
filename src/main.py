@@ -7,15 +7,20 @@ from os import scandir as lsContents
 from os.path import basename as base
 from os.path import exists as isDir
 from shutil import move as copyfile
-from typing import Any
+from typing import Any, NoReturn
 
 from loadSequence import load
 
 
-def main():
+def main() -> NoReturn | None:
+    """Program method wrapper/execution order.
+
+    :return: [description]
+    :rtype: [type]
+    """
     origin: str | PathLike = getOrigin()
     destination: str | PathLike = getDestination()
-    fileType: str | PathLike = getFileType()
+    fileType: str = getFileType()
     originClearance: bool = verify(origin)
     destinationClearance: bool = verify(destination)
 
@@ -84,7 +89,6 @@ def transfer(origin, destination, fileType) -> Any:
             if not file.name.startswith('.') and file.name.endswith(
                     f'.{fileType}') == True and file.is_file():
                 files.append(file.name)
-
                 copyfile(file, (destination + "\\" + base(file)))
         load(
             '> Copying correct files',
@@ -92,7 +96,7 @@ def transfer(origin, destination, fileType) -> Any:
         )
 
 
-def Ex_0():
+def Ex_0() -> NoReturn | None:
     """Exit program with success message.
 
     :return: Exits program.
@@ -102,7 +106,7 @@ def Ex_0():
     return exit()
 
 
-def Ex_1(fileType: str):
+def Ex_1(fileType: str) -> NoReturn | None:
     """Exit program with error message.
 
     :param fileType: file-type of files not found
