@@ -13,7 +13,7 @@ from loadSequence import load
 
 
 def main() -> NoReturn | None:
-    """Program method wrapper/execution order.
+    """Program method wrapper/entry point.
 
     :return: [description]
     :rtype: [type]
