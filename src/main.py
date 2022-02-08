@@ -13,10 +13,10 @@ from loadSequence import load
 
 
 def main() -> NoReturn | None:
-    """Program method wrapper/entry point.
+    """Program entry point.
 
-    :return: [description]
-    :rtype: [type]
+    :return: Program starting method.
+    :rtype: NoReturn | None
     """
     origin: str | PathLike = getOrigin()
     destination: str | PathLike = getDestination()
@@ -68,7 +68,7 @@ def verify(directory: PathLike | str) -> bool:
         if isDir(directory):
             load(
                 f'\nVerifying destination for file location:\n> "{directory}"',
-                'Directory verified successfully!', False)
+                '\nDirectory verified successfully!', False)
             return True
         else:
             load(
@@ -83,7 +83,7 @@ def verify(directory: PathLike | str) -> bool:
 
 def transfer(origin, destination, fileType) -> Any:
     files: list = []
-    print('\n> Transferring files now...')
+    print('\n> Transferring files now...\n')
     with lsContents(origin) as dirFiles:
         for file in dirFiles:
             if not file.name.startswith('.') and file.name.endswith(
@@ -91,9 +91,9 @@ def transfer(origin, destination, fileType) -> Any:
                 files.append(file.name)
                 copyfile(file, (destination + "\\" + base(file)))
         load(
-            '> Copying correct files',
-            f'> {len(files)} files successfully copied to new location:\n{files}'
-        )
+            f'> Transferring all ".{fileType}" type files to {destination}',
+            f'> {len(files)} files successfully copied to new location:\n{files}',
+            time=30)
 
 
 def Ex_0() -> NoReturn | None:
@@ -102,7 +102,7 @@ def Ex_0() -> NoReturn | None:
     :return: Exits program.
     :rtype: NoReturn
     """
-    print('\n\nOperation Successfull!')
+    input('\n\nOperation Successfull!\n\nPress ENTER to exit.')
     return exit()
 
 
@@ -114,8 +114,8 @@ def Ex_1(fileType: str) -> NoReturn | None:
     :return: Exits program.
     :rtype: NoReturn
     """
-    print(
-        f'\n\n> Operation Failure!\n\n> No Files were found with given extension: ".{fileType}".\n'
+    input(
+        f'\n\n> Operation Failure!\n\n> No Files were found with given extension: ".{fileType}".\n\nPress ENTER to exit.'
     )
     return exit()
 

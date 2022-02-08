@@ -1,6 +1,6 @@
 # PyFiTransfer
 
-> **_Python File Transfer v0.2.0_**
+> **_Python File Transfer v0.3.0_**
 
 ## About
 
