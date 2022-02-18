@@ -9,7 +9,7 @@ from os.path import exists as isDir
 from shutil import move as copyfile
 from typing import Any, NoReturn
 
-from loadSequence import load
+from PyLoad import load
 
 
 def main() -> NoReturn | None:
