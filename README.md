@@ -1,35 +1,68 @@
 # PyFiTransfer
 
-> **_Python File Transfer v0.3.0_**
-
 ## About
 
 - **_PyFiTransfer_** is a simple program developed as a way to easily transfer files of a given extension-type from one directory to a destination directory.
 
-- Created as a solution for easily moving gaming screenshots to my primary "pictures" folder easily without having to manually _copy-and-paste_ after every time playing a game.
+- Originally created as a personal solution for easily moving gaming screenshots to my primary "pictures" folder without having to manually _copy-and-paste_ various screenshots after each time playing a game.
+
+---
+
+## Installing PyFiTransfer
+
+### Using pip
+
+> Coming Soon!
+
+---
+
+### Manual Installation
+
+1. Download source code from the [PyLoadBar GitHub repo](https://github.com/schlopp96/PyFiTransfer).
+
+2. Extract contents of the containing `**.zip` file to desired install location.
+
+3. Navigate to directory containing extracted contents, and open said folder within a terminal.
+
+4. Enter `pip install -r requirements.txt` to install all dependencies for this package.
+
+5. Finally, move the `"PyFiTransfer-vx.x.x"` directory to your global Python 3rd-party package installation directory to be able to import `PyLoadBar` like any other module:
+
+   - `"path/to/python/Lib/site-packages/PyFiTransfer-vx.x.x"`
+
+6. Done!
 
 ---
 
 ## Usage
 
-1. To use PyFiTransfer, start by running the python script located here:
+- _If you've already installed **PyFiTransfer** using pip:_
 
-   - `"../PyFiTransfer/src/main.py"`
+  - In an open python environment, simply import the PyFiTransfer package and run the `main.py` script like so:
 
-2. Enter the file-path to the directory containing the files you wish to transfer.
+    ```python
+    import PyFiTransfer
 
-3. Enter the file-path to the directory acting as the file transfer's destination.
+    >>> PyFiTransfer.main()
+    ```
 
-4. Enter the file-type of the files you wish to transfer (not including the "." that proceeds the file type).
+- _If you have **NOT** already installed **PyFiTransfer** to your Python environment:_
+
+  - Start by opening the python script located within the installation directory:
+    - `"path/to/PyFiTransfer/PyFiTransfer/main.py"`
+
+1. Enter the file-path to the directory acting as the file transfer's destination.
+
+2. Enter the file-type of the files you wish to transfer **_(not including the "." that proceeds the file type)_**.
 
    - Example:
      - You would enter (without the quotations) `"exe"` when needing to migrate files with the `".exe"` extension.
 
-5. If everything is correctly validated, a success message is returned to the console, alongside a list of files that were successfully transferred.
+3. If everything is correctly validated, a success message is returned to the console, alongside a list of files that were successfully transferred.
 
    - If an error occurs, the program will display an error message before exiting.
 
-6. Finally, the user is prompted to press the `[ENTER]` key to exit the process.
+4. Finally, the user is prompted to press the `[ENTER]` key to exit the process.
 
 ---
 
