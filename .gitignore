@@ -149,8 +149,6 @@ dmypy.json
 # Cython debug symbols
 cython_debug/
 
-# update-notes document.
-update-notes.md
 
 # PyCharm
 #  JetBrains specific template is maintainted in a separate JetBrains.gitignore that can
