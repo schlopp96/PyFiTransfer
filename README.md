@@ -18,7 +18,7 @@
 
 ### Manual Installation
 
-1. Download source code from the [PyLoadBar GitHub repo](https://github.com/schlopp96/PyFiTransfer).
+1. Download source code from the [PyFiTransfer GitHub repo](https://github.com/schlopp96/PyFiTransfer).
 
 2. Extract contents of the containing `**.zip` file to desired install location.
 
@@ -26,7 +26,7 @@
 
 4. Enter `pip install -r requirements.txt` to install all dependencies for this package.
 
-5. Finally, move the `"PyFiTransfer-vx.x.x"` directory to your global Python 3rd-party package installation directory to be able to import `PyLoadBar` like any other module:
+5. Finally, move the `"PyFiTransfer-vx.x.x"` directory to your global Python 3rd-party package installation directory to be able to import `PyFileTransfer` like any other module:
 
    - `"path/to/python/Lib/site-packages/PyFiTransfer-vx.x.x"`
 
