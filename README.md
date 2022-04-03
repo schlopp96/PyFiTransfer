@@ -20,7 +20,7 @@
 
 1. Download source code from the [PyFiTransfer GitHub repo](https://github.com/schlopp96/PyFiTransfer).
 
-2. Extract contents of the containing `**.zip` file to desired install location.
+2. Extract contents of the containing `.zip` file to desired install location.
 
 3. Navigate to directory containing extracted contents, and open said folder within a terminal.
 
@@ -41,7 +41,7 @@
   - In an open python environment, simply import the PyFiTransfer package and run the `main.py` script like so:
 
     ```python
-    import PyFiTransfer
+    >>> import PyFiTransfer
 
     >>> PyFiTransfer.main()
     ```
