@@ -4,6 +4,7 @@ import logging
 import os
 from os import PathLike, chdir
 from os import scandir as lsContents
+import os
 from os.path import basename as base
 from os.path import dirname
 from os.path import exists as isDir
