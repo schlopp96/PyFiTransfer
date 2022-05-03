@@ -19,7 +19,7 @@ chdir(dirname(__file__))
 
 def init_logger():
     logger = logging.getLogger(__name__)
-    logger.setLevel(logging.DEBUG)
+    logger.setLevel(logging.INFO)
 
     formatter = logging.Formatter(
         "[%(asctime)s : %(levelname)s] - %(message)s",
@@ -35,7 +35,7 @@ def init_logger():
 
 logger = init_logger()
 
-BORDER: str = '='.ljust(50, '=')
+BORDER: str = '\n='.ljust(50, '=')
 
 
 def main() -> NoReturn | None:
