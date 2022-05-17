@@ -2,7 +2,7 @@
 
 ## About
 
-- **_PyFiTransfer_** is a simple program developed as a way to easily transfer files of a given extension-type from one directory to a destination directory.
+- **_PyFiTransfer_** is a simple program developed as a way to easily transfer files of a given extension-type from their source directory to a destination directory.
 
 - Originally created as a personal solution for easily moving gaming screenshots to my primary "pictures" folder without having to manually _copy-and-paste_ various screenshots after each time playing a game.
 
@@ -22,34 +22,32 @@
 
 2. Extract contents of the containing `.zip` file to desired install location.
 
-3. Navigate to directory containing extracted contents, and open said folder within a terminal.
+3. Navigate to directory containing extracted contents, and open said directory within a terminal.
 
 4. Enter `pip install -r requirements.txt` to install all dependencies for this package.
 
-5. Finally, move the `"PyFiTransfer-vx.x.x"` directory to your global Python 3rd-party package installation directory to be able to import `PyFileTransfer` like any other module:
+   - **Optional:**
+     - Move the `"PyFiTransfer-vx.x.x"` directory to your global Python 3rd-party package installation directory to be able to import `PyFileTransfer` like any other module:
+       - `"path/to/python/Lib/site-packages/PyFiTransfer-vx.x.x"`
 
-   - `"path/to/python/Lib/site-packages/PyFiTransfer-vx.x.x"`
-
-6. Done!
+5. Done!
 
 ---
 
 ## Usage
 
-- _If you've already installed **PyFiTransfer** using pip:_
+- In an open python environment, simply import the PyFiTransfer package and run the `main.py` script like so:
 
-  - In an open python environment, simply import the PyFiTransfer package and run the `main.py` script like so:
+  ```python
+  >>> import PyFiTransfer
 
-    ```python
-    >>> import PyFiTransfer
+  >>> PyFiTransfer.main()
+  ```
 
-    >>> PyFiTransfer.main()
-    ```
+- _If you have **NOT** installed **PyFiTransfer** using `pip`:_
 
-- _If you have **NOT** already installed **PyFiTransfer** to your Python environment:_
-
-  - Start by opening the python script located within the installation directory:
-    - `"path/to/PyFiTransfer/PyFiTransfer/main.py"`
+  - Open the python script titled `main.py` located within the installation directory:
+    - `"~PyFiTransfer/PyFiTransfer/main.py"`
 
 1. Enter the file-path to the directory acting as the file transfer's destination.
 
