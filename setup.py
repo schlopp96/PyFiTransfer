@@ -7,7 +7,7 @@ setup(
     name="PyFiTransfer",
     version="0.4.0",
     description=
-    'Program built to easily transfer files of a specified extension-type from a starting directory to desired destination.',
+    'Transfer files with specified extension-type from a starting directory to desired target directory.',
     url='https://github.com/schlopp96/PyFiTransfer',
     author='schlopp96',
     author_email='schloppdaddy@gmail.com',
@@ -30,5 +30,7 @@ setup(
         "Topic :: Utilities",
     ],
     keywords=[
-        'file', 'transfer', 'script', 'files', 'directory', 'directories'
+        'file', 'transfer', 'script', 'files', 'directory', 'directories',
+        'extension', 'extensions', 'rename-files', 'rename-file', 'move-file',
+        'move-files'
     ])
