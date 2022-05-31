@@ -2,35 +2,45 @@
 
 ## About
 
-- **_PyFiTransfer_** is a simple program developed as a way to easily transfer files of a given extension-type from their source directory to a destination directory.
+- **_PyFiTransfer_** is a python module/cli program that can easily transfer files of a given extension-type from their source directory to a destination directory.
 
-- Originally created as a personal solution for easily moving gaming screenshots to my primary "pictures" folder without having to manually _copy-and-paste_ various screenshots after each time playing a game.
+- Intended as a part of an upcoming library I'm creating that will be based around basic file operations.
 
 ---
 
 ## Installing PyFiTransfer
 
-### Using pip
+### Using pip _(Recommended)_
 
-> Coming Soon!
+- To install _**PyFiTransfer**_ using `pip`, enter the following:
+
+  - ```shell
+      python -m pip install PyFiTransfer
+    ```
+
+- Done!
 
 ---
 
 ### Manual Installation
 
-1. Download source code from the [PyFiTransfer GitHub repo](https://github.com/schlopp96/PyFiTransfer).
+1. Start by doing one of two things:
 
-2. Extract contents of the containing `.zip` file to desired install location.
+   - A. Download source code `*.zip` archive from the PyFiTransfer GitHub repo ["releases"](https://github.com/schlopp96/PyFiTransfer) tab, and extract the contents to your desired installation directory.
+   - B. Clone the repo with the git client of your choice by entering the following command:
+     - `git clone https://github.com/schlopp96/PyFiTransfer/releases/latest/`
 
-3. Navigate to directory containing extracted contents, and open said directory within a terminal.
+2. Navigate to directory containing extracted contents, and open said directory within a terminal.
 
-4. Enter `pip install -r requirements.txt` to install all dependencies for this package.
+3. Install all dependencies for this package by entering the following command:
+   - `pip install -r requirements.txt`
 
-   - **Optional:**
-     - Move the `"PyFiTransfer-vx.x.x"` directory to your global Python 3rd-party package installation directory to be able to import `PyFileTransfer` like any other module:
-       - `"path/to/python/Lib/site-packages/PyFiTransfer-vx.x.x"`
+- **Optional:**
 
-5. Done!
+  - Move the `"PyFiTransfer-vx.x.x"` directory to your global Python 3rd-party package installation directory to be able to import `PyFileTransfer` like any other module:
+    - `"path/to/python/Lib/site-packages/HERE"`
+
+- Done!
 
 ---
 

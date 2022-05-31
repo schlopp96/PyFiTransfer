@@ -8,14 +8,16 @@ from os.path import basename as base
 from os.path import dirname
 from os.path import exists as isDir
 from shutil import move as copyfile
-from typing import NoReturn
 
-from PyLoadBar import load
+from PyLoadBar import PyLoadBar
+
+loader = PyLoadBar()
 
 # > Set CWD:
 chdir(dirname(__file__))
 
 BORDER: str = '\n='.ljust(50, '=')
+
 
 class _LogGenerator():
     """Wrapper for application logging.
@@ -34,7 +36,6 @@ class _LogGenerator():
 
     def __init__(self,
                  name: str = __name__,
-                 log_file: str = f"./logs/{__name__}.log",
                  logfmt: str = '[%(asctime)s - %(levelname)s] : %(message)s',
                  datefmt: str = "%Y-%m-%d %H:%M:%S",
                  log_lvl=DEBUG):
@@ -53,21 +54,21 @@ class _LogGenerator():
         ---
 
         :param name: assign specific name to logger, defaults to `__name__`.
-        :type name: str, optional
+        :type name: :class:`str`, optional
         :param logfmt: Initialize the formatter either with the specified format string, or a default as described above, defaults to '[%(asctime)s - %(levelname)s] : %(message)s'
-        :type logfmt: str, optional
+        :type logfmt: :class:`str`, optional
         :param datefmt: set date formatting, defaults to '%Y-%m-%d %H:%M:%S'
-        :type datefmt: str, optional
+        :type datefmt: :class:`str`, optional
         :param log_lvl: Set the logging level of this logger. Level must be an int or a str, defaults to `DEBUG`.
-        :type log_lvl: int, optional
+        :type log_lvl: :class:`int`, optional
         """
-        self.logger = logging.getLogger(name)
+        self.name = name
+        log_file: str = f'./logs/{self.name}.log'
+        self.logger = logging.getLogger(self.name)
         self.logfmt = logfmt
         self.datefmt = datefmt
         self.log_lvl = log_lvl
-        self.log_file = log_file
         self.formatter = logging.Formatter(logfmt, datefmt=datefmt)
-        self.log_file = log_file
         self.fhandler = logging.FileHandler(log_file)
         self.logger.addHandler(self.fhandler)
         self.fhandler.setFormatter(self.formatter)
@@ -79,7 +80,7 @@ class _LogGenerator():
         ---
 
         :param msg: message to log
-        :type msg: str
+        :type msg: :class:`str`
         :return: create log entry with given context.
         :rtype: None
         """
@@ -91,7 +92,7 @@ class _LogGenerator():
         ---
 
         :param msg: message to be logged
-        :type msg: str
+        :type msg: :class:`str`
         :return: create log entry with given context.
         :rtype: None
         """
@@ -103,7 +104,7 @@ class _LogGenerator():
         ---
 
         :param msg: message to be logged
-        :type msg: str
+        :type msg: :class:`str`
         :return: create log entry with given context.
         :rtype: None
         """
@@ -115,7 +116,7 @@ class _LogGenerator():
         ---
 
         :param msg: message to be logged
-        :type msg: str
+        :type msg: :class:`str`
         :return: create log entry with given context.
         :rtype: None
         """
@@ -127,9 +128,9 @@ class _LogGenerator():
         ---
 
         :param msg: message to be logged
-        :type msg: str
+        :type msg: :class:`str`
         :param exc_info: include exception info, defaults to True
-        :type exc_info: bool, optional
+        :type exc_info: :class:`bool`, optional
         :return: create log entry with given context and include exception info.
         :rtype: None
         """
@@ -141,7 +142,7 @@ class _LogGenerator():
         ---
 
         :param msg: message to be logged
-        :type msg: str
+        :type msg: :class:`str`
         :return: create log entry with given context.
         :rtype: None
         """
@@ -149,122 +150,137 @@ class _LogGenerator():
 
 
 class _Exit:
-    def __init__(self):
-        pass
+    """Exit program with success or error.
 
-    def success(self) -> NoReturn | None:
-        """Exit program with success message.
+    - Uses built-in Python `sys` module.
+
+    - Contains the following class methods:
+
+        - :func:`success(self) -> None`
+            - Exit program with success.
+
+        - :func:`error(self) -> None`
+            - Exit program with error.
+
+    """
+
+    def __init__(self):
+        """Initialize exit instance."""
+        self.exit_code = 0
+
+    def success(self) -> None:
+        """Exit program with success.
 
         ---
 
-        :return: Exits program.
-        :rtype: NoReturn
+        :return: exit program with success.
+        :rtype: None
         """
         logger.info(f"Operation Successful!\n\n>> Exiting Program...{BORDER}")
-        print("\n\nOperation Successfull!\n\nExiting Program...")
-        return exit()
+        self.exit_code = 0
+        exit(self.exit_code)
 
-
-    def error(self, file_ext: str) -> NoReturn | None:
-        """Exit program with error message.
+    def error(self, msg: str) -> None:
+        """Exit program with error.
 
         ---
 
-        :param file_ext: extension of files not found
-        :type file_ext: str
-        :return: Closes application
-        :rtype: NoReturn | None
+        :param msg: message to be logged
+        :type msg: :class:`str`
+        :return: exit program with error.
+        :rtype: None
         """
-        logger.warning(
-            f'No Files were found with given extension: ".{file_ext}".\n>> Exiting Program...{BORDER}'
-        )
-        print(
-            f'\n\nOperation Failure!\n\n>> No Files were found with given extension: ".{file_ext}".\n\n>> Exiting Program...'
-        )
-        return exit()
+        self.exit_code = 1
+        logger.error(f'{msg}\n>> Exiting Program...{BORDER}')
+        exit(self.exit_code)
+
 
 logger = _LogGenerator(name='transferlog')
 exit_program = _Exit()
 
-def main() -> NoReturn | None:
+
+def main() -> None:
     """Initialize logging subsystem and start program.
 
     ---
 
     :return: Program start
-    :rtype: NoReturn | None
+    :rtype: None
     """
     logger.info("PyFiTransfer Started...\n")
 
-    origin: str = get_src_dir()
+    origin: str = _get_src_dir()
     logger.info(f'Got containing directory:\n>> "{origin}"\n')
 
-    targetDir: str = get_dest_dir()
+    targetDir: str = _get_dest_dir()
     logger.info(f'Got target destination:\n>> "{targetDir}"\n')
 
-    fileExt: str = get_ext()
+    fileExt: str = _get_ext()
     logger.info(
         f'Got extension of files to be transferred:\n>> ".{fileExt}"\n')
 
-    if verify_dir(origin) and verify_dir(targetDir):
+    if _verify_dir(origin) and _verify_dir(targetDir):
         logger.info("Starting file transfer...\n")
-        transfer(origin, targetDir, fileExt)
-        return exit_program.success()
-    return exit_program.error(fileExt)
+
+        if transfer(origin, targetDir, fileExt):
+            return exit_program.success()
+        else:
+            return exit_program.error("File transfer failed!")
+    return exit_program.error(f'No files found with extension: "{fileExt}"')
 
 
-def get_src_dir() -> str:
+def _get_src_dir() -> str:
     """Get starting location of files to be transferred.
 
     ---
 
     :return: directory of files to be transferred
-    :rtype: str
+    :rtype: :class:`str`
     """
     return input(
-        "\nEnter filepath of the directory containing the files you wish to transfer:\n> "
+        "\nEnter filepath of the directory containing the files to be transferred:\n> "
     )
 
 
-def get_dest_dir() -> str:
+def _get_dest_dir() -> str:
     """Get destination of transferred files.
 
     ---
 
     :return: destination of file transfer.
-    :rtype: str
+    :rtype: :class:`str`
     """
     return input("\nEnter destination to transfer files:\n> ")
 
 
-def get_ext() -> str:
+def _get_ext() -> str:
     """Get extension of files to transfer.
 
     ---
 
     :return: file-type/extension of files to be transferred.
-    :rtype: str
+    :rtype: :class:`str`
     """
     return input(
         '\nEnter type/extension of the files to transfer.\n- Only include letters of extension.\n\t\t- Correct Example (without quotes): "mp4"\n>> '
     )
 
 
-def verify_dir(filepath: PathLike | str) -> bool:
+def _verify_dir(filepath: PathLike | str) -> bool:
     """Verify if given filepath is a directory.
 
     ---
 
     :param filepath: path to directory.
-    :type filepath: PathLike | str
-    :return: `True` if directory exists, `False` if not.
-    :rtype: bool
+    :type filepath: :class:`PathLike` | :class:`str`
+    :return: :bool:`True` if directory exists, :bool:`False` if not.
+    :rtype: :class:`bool`
     """
     try:
         logger.info(
             f'Verifying directory of given file location:\n>> "{filepath}"...')
         if isDir(filepath):
-            load(
+            loader.load(
                 f'\nVerifying file transfer destination:\n>> "{filepath}"',
                 "\nDirectory verified successfully!",
                 enable_display=False,
@@ -272,7 +288,7 @@ def verify_dir(filepath: PathLike | str) -> bool:
             logger.info(f"Filepath \"{filepath}\" verified successfully!\n")
             return True
         else:
-            load(
+            loader.load(
                 f'\nVerifying file transfer destination:\n>> "{filepath}"',
                 f'>> ERROR:\n>> Directory: "{filepath}" could NOT be verified.',
                 enable_display=False,
@@ -290,38 +306,46 @@ def verify_dir(filepath: PathLike | str) -> bool:
         return False
 
 
-def transfer(src_dir: str, target_dir: str, file_ext: str) -> None:
+def transfer(src_dir: str, target_dir: str, file_ext: str) -> bool:
     """Transfer files of a given extension from `src_dir` to `target_dir`.
 
     ---
 
     :param src_dir: starting location of transfer
-    :type src_dir: str
+    :type src_dir: :class:`str`
     :param target_dir: file transfer destination
-    :type target_dir: str
+    :type target_dir: :class:`str`
     :param file_ext: extension of files to be transferred
-    :type file_ext: str
+    :type file_ext: :class:`str`
     :return: Transfers files to new destination.
-    :rtype: Any
+    :rtype: :class:`Any`
     """
     files: list = []
     print("\n> Transferring files now...\n")
     with lsContents(src_dir) as dirFiles:
-        for file in dirFiles:
-            if (not file.name.startswith(".")
-                    and file.name.endswith(f".{file_ext}") == True
-                    and file.is_file()):
-                logger.info(f">> Transferring file: \"{file.name}\"...")
-                files.append(file.name)
-                copyfile(file, f"{target_dir}\{base(file)}")
-        load(
-            f'> Transferring all files with extension ".{file_ext}" to:\n>> "{target_dir}"',
-            f'> {len(files)} files successfully copied to new location:\n>> {files}',
-            time=len(files) if files else 3,
-        )
-        logger.info(
-            f'{len(files)} files successfully copied to new location:\n>> "{target_dir}"'
-        )
+        try:
+            for file in dirFiles:
+                if file.is_file() and (not file.name.startswith(".")
+                                       and file.name.endswith(f".{file_ext}")):
+                    logger.info(f">> Transferring file: \"{file.name}\"...")
+                    files.append(file.name)
+                    copyfile(file, f"{target_dir}\{base(file)}")
+
+            loader.load(
+                msg_loading=
+                f'> Transferring all files with extension ".{file_ext}" to:\n>> "{target_dir}"',
+                msg_complete=
+                f'> {len(files)} files successfully copied to new location:\n>> {files}',
+                time=len(files) if files else 3)
+
+            logger.info(
+                f'{len(files)} files successfully copied to new location:\n>> "{target_dir}"\n'
+            )
+            return True
+        except (OSError, ValueError, TypeError, EOFError) as error:
+            logger.exception(
+                f'Something went wrong during file transfer...\n>> {error}\n')
+            return False
 
 
 def change_ext(path, curext, newext):
