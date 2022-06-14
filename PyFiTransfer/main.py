@@ -300,7 +300,7 @@ def _verify_dir(filepath: PathLike | str) -> bool:
         logger.exception(
             f"Something went wrong during directory verification...\n>> {error}"
         )
-        print(
+        logger.info(
             f">> ERROR:\nSomething went wrong during directory verification...\n>> {error.__traceback__}"
         )
         return False
@@ -321,7 +321,7 @@ def transfer(src_dir: str, target_dir: str, file_ext: str) -> bool:
     :rtype: :class:`Any`
     """
     files: list = []
-    print("\n> Transferring files now...\n")
+    logger.info("\n> Transferring files now...\n")
     with lsContents(src_dir) as dirFiles:
         try:
             for file in dirFiles:
