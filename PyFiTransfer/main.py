@@ -352,8 +352,6 @@ def transfer(src_dir: str, target_dir: str, file_ext: str) -> bool:
             logger.info(
                 f'{len(files)} files successfully copied to new location:\n>> "{target_dir}"\n'
             )
-            print('Press any key to exit...')
-            getch()
             return True
         except (OSError, ValueError, TypeError, EOFError) as error:
             logger.exception(
