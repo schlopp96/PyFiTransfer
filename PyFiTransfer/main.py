@@ -2,6 +2,7 @@
 
 import logging
 import os
+from msvcrt import getch
 from os import PathLike, chdir
 from os import scandir as lsContents
 from os.path import basename as base
@@ -222,10 +223,13 @@ def main() -> None:
     if _verify_dir(origin) and _verify_dir(targetDir):
         logger.info("Starting file transfer...\n")
 
-        if transfer(origin, targetDir, fileExt):
-            return exit_program.success()
-        else:
+        if not transfer(origin, targetDir, fileExt):
+            print('Press any key to exit...')
+            getch()
             return exit_program.error("File transfer failed!")
+        print('Press any key to exit...')
+        getch()
+        return exit_program.success()
     return exit_program.error(f'No files found with extension: "{fileExt}"')
 
 
@@ -331,16 +335,25 @@ def transfer(src_dir: str, target_dir: str, file_ext: str) -> bool:
                     files.append(file.name)
                     copyfile(file, f"{target_dir}\{base(file)}")
 
+            if not files:
+                logger.info(
+                    f">> No files found with extension: \"{file_ext}\" in directory: \"{src_dir}\""
+                )
+                print(f"\n> No files found with extension: \"{file_ext}\" in directory: \"{src_dir}\"")
+                return False
+
             loader.load(
                 msg_loading=
                 f'> Transferring all files with extension ".{file_ext}" to:\n>> "{target_dir}"',
                 msg_complete=
                 f'> {len(files)} files successfully copied to new location:\n>> {files}',
-                time=len(files) if files else 3)
+                time=len(files) // 2)
 
             logger.info(
                 f'{len(files)} files successfully copied to new location:\n>> "{target_dir}"\n'
             )
+            print('Press any key to exit...')
+            getch()
             return True
         except (OSError, ValueError, TypeError, EOFError) as error:
             logger.exception(
