@@ -18,7 +18,7 @@ setup(
     install_requires=[reqs],
     entry_points={
         'gui_scripts': ['pyfitransfer-gui=PyFiTransfer.main:main'],
-        'console_scripts': ['pyfitransfer-cli=PyFiTransfer.CLI_main:main']
+        'console_scripts': ['pyfitransfer-cli=PyFiTransfer.CLI_main:CLI_main']
     },
     classifiers=[
         "Development Status :: 3 - Alpha",

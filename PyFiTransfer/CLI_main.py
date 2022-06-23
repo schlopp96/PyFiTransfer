@@ -14,7 +14,7 @@ from PyFiTransfer.appevents.CLI_loop import CLI_loop
 from PyFiTransfer.appevents.events import logger
 
 
-def main() -> None:
+def CLI_main() -> None:
     """CLI entry point.
 
     ---
@@ -28,4 +28,4 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    CLI_main()
