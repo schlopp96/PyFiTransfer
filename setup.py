@@ -16,6 +16,10 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     install_requires=[reqs],
+    entry_points={
+        'gui_scripts': ['pyfitransfer-gui=PyFiTransfer.main:main'],
+        'console_scripts': ['pyfitransfer-cli=PyFiTransfer.CLI_main:main']
+    },
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Intended Audience :: Developers",
