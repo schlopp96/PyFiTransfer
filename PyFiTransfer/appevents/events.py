@@ -1,14 +1,11 @@
 import os
-from msvcrt import getch
 from os import PathLike
 from os import scandir as lsContents
 from os.path import basename as base
-from shutil import copyfile
+from shutil import move
 
 from genericpath import isdir
-import PySimpleGUI as sg
 from PyFiTransfer.applogger.logger import _LogGenerator
-from PyFiTransfer.appgui.gui import window
 from PyLoadBar import PyLoadBar
 
 logger = _LogGenerator(name='transferlog', filename='transferlog')
@@ -19,6 +16,25 @@ BORDER: str = '\n='.ljust(50, '=')
 
 
 class FileTransfer:
+    """Class containing various methods related to transferring files.
+
+    - Contains the following class methods:
+
+        - :meth:`__get_src_dir(self) -> str`
+            - Get starting location of files to be transferred.
+
+        - :meth:`__get_dest_dir(self) -> str`
+            - Get target destination for file transfer.
+
+        - :meth:`__get_ext(self) -> str`
+            - Get extension of files to transfer.
+
+        - :meth:`__verify_dir(self, filepath: PathLike | str) -> bool`
+            - Verify if given filepath is a directory.
+
+        - :meth:`transfer(self, src_dir: str | os.PathLike, target_dir: str | os.PathLike, file_ext: str | os.PathLike) -> bool`
+            - Transfer files from source directory to target directory.
+    """
 
     def _get_src_dir(self) -> str:
         """Get starting location of files to be transferred.
@@ -33,7 +49,7 @@ class FileTransfer:
         )
 
     def _get_dest_dir(self) -> str:
-        """Get destination of transferred files.
+        """Get target destination for file transfer.
 
         ---
 
@@ -98,21 +114,24 @@ class FileTransfer:
     def transfer(self, src_dir: str | os.PathLike,
                  target_dir: str | os.PathLike,
                  file_ext: str | os.PathLike) -> bool:
-        """Transfer files of a given extension from `src_dir` to `target_dir`.
+        """Transfer files of a given extension from source directory to target destination.
 
         ---
 
         :param src_dir: starting location of transfer
-        :type src_dir: :class:`str`
+        :type src_dir: :class:`str` | :class:`os.PathLike`
         :param target_dir: file transfer destination
-        :type target_dir: :class:`str`
+        :type target_dir: :class:`str` | :class:`os.PathLike`
         :param file_ext: extension of files to be transferred
-        :type file_ext: :class:`str`
-        :return: Transfers files to new destination.
+        :type file_ext: :class:`str` | :class:`os.PathLike`
+        :return: :bool:`True` if transfer was successful, :bool:`False` if not.
         :rtype: :class:`Any`
         """
+
         files: list = []
-        logger.info("\n> Transferring files now...\n")
+
+        logger.info("> Transferring files now...\n")
+
         with lsContents(str(src_dir)) as dirFiles:
             try:
                 for file in dirFiles:
@@ -121,7 +140,7 @@ class FileTransfer:
                         logger.info(
                             f">> Transferring file: \"{file.name}\"...")
                         files.append(file.name)
-                        copyfile(file, f"{target_dir}\{base(file)}")
+                        move(file, f"{target_dir}\{base(file)}")
 
                 if not files:
                     logger.info(
@@ -150,26 +169,36 @@ class FileTransfer:
                 return False
 
 
-def change_ext(path, curext, newext):
+def change_ext(path: str | os.PathLike, curext: str, newext: str) -> None:
+    """Change extension of all files of a given type.
+
+    :param path: path to containing directory of files to be changed
+    :type path: :class:`str` | :class:`os.PathLike`
+    :param curext: extension of files to be changed
+    :type curext: :class:`str`
+    :param newext: extension to change files to.
+    :type newext: :class:`str`
+    :return: change extension of all files of a certain type in directory.
+    :rtype: None
+    """
     for filename in os.listdir(os.path.dirname(os.path.abspath(path))):
         base_file, ext = os.path.splitext(filename)
         if ext == curext:
-            os.rename(filename, base_file + newext)
+            return os.rename(filename, base_file + newext)
 
 
-class _Exit:
+class Exit:
     """Exit program with success or error.
 
     - Uses built-in Python `sys` module.
 
     - Contains the following class methods:
 
-        - :func:`success(self) -> None`
+        - :meth:`success(self) -> None`
             - Exit program with success.
 
-        - :func:`error(self) -> None`
+        - :meth:`error(self) -> None`
             - Exit program with error.
-
     """
 
     def __init__(self):
@@ -204,56 +233,4 @@ class _Exit:
 
 
 Events = FileTransfer()
-exprogram = _Exit()
-
-
-def CLI_loop() -> None:
-    origin: str = Events._get_src_dir()
-    logger.info(f'Got containing directory:\n>> "{origin}"\n')
-
-    targetDir: str = Events._get_dest_dir()
-    logger.info(f'Got target destination:\n>> "{targetDir}"\n')
-
-    fileExt: str = Events._get_ext()
-    logger.info(
-        f'Got extension of files to be transferred:\n>> ".{fileExt}"\n')
-
-    if Events._verify_dir(origin) and Events._verify_dir(targetDir):
-        logger.info("Starting file transfer...\n")
-
-        if not Events.transfer(origin, targetDir, fileExt):
-            print('Press any key to exit...')
-            getch()
-            return exprogram.error("File transfer failed!")
-        print('Press any key to exit...')
-        getch()
-        return exprogram.success()
-    return exprogram.error(f'No files found with extension: "{fileExt}"')
-
-
-def GUI_loop() -> None:
-    while True:
-        event, vals = window.read()
-
-        logger.info(f'{event} : {vals}')
-
-        if event in [sg.WIN_X_EVENT, sg.WIN_CLOSED, 'Exit']:
-            break
-
-        if event == '-Transfer-':
-            if len(vals['-SourceFolderInput-']) < 1:
-                sg.Popup('Make sure all fields are filled out!')
-                continue
-            if len(vals['-TargetFolderInput-']) < 1:
-                sg.Popup('Make sure all fields are filled out!')
-                continue
-            if len(vals['-FileExtensionInput-']) < 1:
-                sg.Popup('Make sure all fields are filled out!')
-                continue
-            Events.transfer(vals['-SourceFolderInput-'],
-                            vals['-TargetFolderInput-'],
-                            vals['-FileExtensionInput-'])
-
-    window.close()
-
-    return exprogram.success()
+exprogram = Exit()

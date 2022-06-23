@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 import sys
-from msvcrt import getch
 from os import chdir
 from os.path import dirname
 
@@ -11,17 +10,19 @@ sys.path.insert(0, dirname(
 # > Set CWD:
 chdir(dirname(__file__))
 
-from PyFiTransfer.appevents.events import logger, CLI_loop
+from PyFiTransfer.appevents.CLI_loop import CLI_loop
+from PyFiTransfer.appevents.events import logger
 
 
 def main() -> None:
-    """Initialize logging subsystem and start CLI program.
+    """CLI entry point.
 
     ---
 
-    :return: Program start
+    :return: start CLI program.
     :rtype: None
     """
+
     logger.info("PyFiTransfer-CLI Started...\n")
     return CLI_loop()
 
