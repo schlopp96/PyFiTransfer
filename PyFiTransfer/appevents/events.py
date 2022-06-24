@@ -113,8 +113,8 @@ class FileTransfer:
             return False
 
     def transfer(self, src_dir: str | os.PathLike,
-                 target_dir: str | os.PathLike,
-                 file_ext: str | os.PathLike) -> bool:
+                 target_dir: str | os.PathLike, file_ext: str | os.PathLike,
+                 gui: bool) -> bool | int:
         """Transfer files of a given extension from source directory to target destination.
 
         ---
@@ -126,7 +126,7 @@ class FileTransfer:
         :param file_ext: extension of files to be transferred
         :type file_ext: :class:`str` | :class:`os.PathLike`
         :return: :bool:`True` if transfer was successful, :bool:`False` if not.
-        :rtype: :class:`Any`
+        :rtype: :class:`bool` | :class:`int`
         """
 
         files: list = []
@@ -145,24 +145,35 @@ class FileTransfer:
 
                 if not files:
                     logger.info(
-                        f">> No files found with extension: \"{file_ext}\" in directory: \"{src_dir}\""
+                        f">> No files found with extension: \"{file_ext}\" in directory: \"{src_dir}\"\n"
                     )
                     print(
                         f"\n> No files found with extension: \"{file_ext}\" in directory: \"{src_dir}\""
                     )
                     return False
 
+                if gui:
+                    print(
+                        f'> Transferring all files with extension ".{file_ext}" to:\n>> "{target_dir}"\n'
+                    )
+                    logger.info(
+                        f'{len(files)} files successfully copied to new location:\n>> "{target_dir}"\n'
+                    )
+                    return len(files)
+
                 loader.load(
                     msg_loading=
                     f'> Transferring all files with extension ".{file_ext}" to:\n>> "{target_dir}"',
                     msg_complete=
                     f'> {len(files)} files successfully copied to new location:\n>> {files}',
-                    time=len(files) // 2)
+                    time=len(files))
 
                 logger.info(
                     f'{len(files)} files successfully copied to new location:\n>> "{target_dir}"\n'
                 )
+
                 return True
+
             except (OSError, ValueError, TypeError, EOFError) as error:
                 logger.exception(
                     f'Something went wrong during file transfer...\n>> {error}\n'

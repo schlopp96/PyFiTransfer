@@ -1,3 +1,5 @@
+from random import uniform
+from time import sleep
 from PyFiTransfer.appevents.events import events, exit_program, logger
 from PyFiTransfer.appgui.gui import sg, window
 
@@ -16,7 +18,7 @@ def GUI_loop() -> None:
 
         logger.info(f'{event} : {vals}')
 
-        if event in [sg.WIN_X_EVENT, sg.WIN_CLOSED, 'Exit']:
+        if event in [sg.WIN_CLOSED, 'Exit']:
             break
 
         if event == '-Transfer-':
@@ -29,9 +31,17 @@ def GUI_loop() -> None:
             if len(vals['-FileExtensionInput-']) < 1:
                 sg.Popup('Make sure all fields are filled out!')
                 continue
-            events.transfer(vals['-SourceFolderInput-'],
-                            vals['-TargetFolderInput-'],
-                            vals['-FileExtensionInput-'])
+            transfer: int = events.transfer(vals['-SourceFolderInput-'],
+                                            vals['-TargetFolderInput-'],
+                                            vals['-FileExtensionInput-'],
+                                            gui=True)
+            if transfer > 0:
+                for _ in range(50):
+                    window.refresh()
+                    sleep(uniform(0.01, 0.25))
+                    window['-ProgressBar-'].update(_ + 1)
+                print(f'Successfully transferred {transfer} files!\n')
+            window['-ProgressBar-'].update(0)
 
     window.close()
 

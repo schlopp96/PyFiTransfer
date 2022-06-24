@@ -25,11 +25,11 @@ def CLI_loop() -> None:
     if events._verify_dir(origin) and events._verify_dir(targetDir):
         logger.info("Starting file transfer...\n")
 
-        if not events.transfer(origin, targetDir, fileExt):
-            print('Press any key to exit...')
+        if not events.transfer(origin, targetDir, fileExt, gui=False):
+            print('\nPress any key to exit...')
             getch()
             return exit_program.error("File transfer failed!")
-        print('Press any key to exit...')
+        print('\nPress any key to exit...')
         getch()
         return exit_program.success()
     return exit_program.error(f'No files found with extension: "{fileExt}"')
