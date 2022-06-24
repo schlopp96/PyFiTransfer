@@ -3,6 +3,7 @@ from os import PathLike
 from os import scandir as lsContents
 from os.path import basename as base
 from shutil import move
+from typing import NoReturn
 
 from genericpath import isdir
 from PyFiTransfer.applogger.logger import _LogGenerator
@@ -20,19 +21,19 @@ class FileTransfer:
 
     - Contains the following class methods:
 
-        - :meth:`__get_src_dir(self) -> str`
+        - :func:`__get_src_dir(self) -> str`
             - Get starting location of files to be transferred.
 
-        - :meth:`__get_dest_dir(self) -> str`
+        - :func:`__get_dest_dir(self) -> str`
             - Get target destination for file transfer.
 
-        - :meth:`__get_ext(self) -> str`
+        - :func:`__get_ext(self) -> str`
             - Get extension of files to transfer.
 
-        - :meth:`__verify_dir(self, filepath: PathLike | str) -> bool`
+        - :func:`__verify_dir(self, filepath: PathLike | str) -> bool`
             - Verify if given filepath is a directory.
 
-        - :meth:`transfer(self, src_dir: str | os.PathLike, target_dir: str | os.PathLike, file_ext: str | os.PathLike) -> bool`
+        - :func:`transfer(self, src_dir: str | os.PathLike, target_dir: str | os.PathLike, file_ext: str | os.PathLike) -> bool`
             - Transfer files from source directory to target directory.
     """
 
@@ -194,18 +195,25 @@ class Exit:
 
     - Contains the following class methods:
 
-        - :meth:`success(self) -> None`
+        - :func:`success(self) -> None`
             - Exit program with success.
 
-        - :meth:`error(self) -> None`
+        - :func:`error(self) -> None`
             - Exit program with error.
     """
 
-    def __init__(self):
-        """Initialize exit instance."""
+    def __init__(self) -> None:
+        """Initialize exit instance.
+
+        ---
+
+        :return: :class:`Exit` class instance.
+        :rtype: None
+        """
+
         self.exit_code = 0
 
-    def success(self) -> None:
+    def success(self) -> NoReturn | None:
         """Exit program with success.
 
         ---
@@ -213,11 +221,13 @@ class Exit:
         :return: exit program with success.
         :rtype: None
         """
-        logger.info(f"Operation Successful!\n\n>> Exiting Program...{BORDER}")
-        self.exit_code = 0
-        exit(self.exit_code)
 
-    def error(self, msg: str) -> None:
+        logger.info(f"Operation Successful!\n\n>> Exiting Program...{BORDER}")
+
+        self.exit_code = 0
+        return exit(self.exit_code)
+
+    def error(self, msg: str) -> NoReturn | None:
         """Exit program with error.
 
         ---
@@ -227,10 +237,12 @@ class Exit:
         :return: exit program with error.
         :rtype: None
         """
+
         self.exit_code = 1
+
         logger.error(f'{msg}\n>> Exiting Program...{BORDER}')
-        exit(self.exit_code)
+        return exit(self.exit_code)
 
 
-Events = FileTransfer()
-exprogram = Exit()
+events = FileTransfer()
+exit_program = Exit()
