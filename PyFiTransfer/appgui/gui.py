@@ -14,7 +14,7 @@ layout: list = [
             'Browse for directory containing the files you wish to transfer.')
     ],
     [
-        sg.Text('Target Directory:', s=(12, 1)),
+        sg.Text('File Destination:', s=(12, 1)),
         sg.VSeperator(),
         sg.Input(key='-TargetFolderInput-', expand_x=True),
         sg.VSeperator(),
@@ -34,6 +34,13 @@ layout: list = [
         sg.Button('Start Transfer',
                   key='-Transfer-',
                   button_color=('white', 'green'))
+    ],
+    [
+        sg.ProgressBar(max_value=50,
+                       size=(30, 10),
+                       orientation='horizontal',
+                       key='-ProgressBar-',
+                       expand_x=True)
     ], [sg.HSeparator()],
     [
         sg.Multiline(s=(30, 30),
@@ -45,13 +52,6 @@ layout: list = [
                      write_only=True,
                      auto_refresh=True,
                      autoscroll=True)
-    ],
-    [
-        sg.ProgressBar(max_value=50,
-                       size=(30, 10),
-                       orientation='horizontal',
-                       key='-ProgressBar-',
-                       expand_x=True)
     ], [sg.HSeparator()], [sg.Exit(button_color=('white', 'firebrick4'))]
 ]
 
