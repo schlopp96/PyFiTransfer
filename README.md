@@ -2,17 +2,19 @@
 
 ## About
 
-- **_PyFiTransfer_** is a python module/cli program that can easily transfer files of a given extension-type from their source directory to a destination directory.
+- **_PyFiTransfer_** is a program built to transfer files of a given extension-type from their source directory to a destination directory.
 
-- Intended as a part of an upcoming library I'm creating that will be based around basic file operations.
+- There are two different program versions: a _CLI_ version **and** a _GUI_ version.
+
+- Not meant to be used directly within a Python environment, but rather as a standalone CLI/GUI application.
 
 ---
 
 ## Installing PyFiTransfer
 
-### Using pip _(Recommended)_
+### **Using pip _(Recommended)_**
 
-- To install _**PyFiTransfer**_ using `pip`, enter the following:
+- To install _**PyFiTransfer**_ using `pip`, enter the following command within the terminal:
 
   - ```shell
       python -m pip install PyFiTransfer
@@ -22,42 +24,75 @@
 
 ---
 
-### Manual Installation
+### **Manual Installation**
 
-1. Start by doing one of two things:
+1. Start by doing **_one of two things_**:
 
-   - A. Download source code `*.zip` archive from the PyFiTransfer GitHub repo ["releases"](https://github.com/schlopp96/PyFiTransfer) tab, and extract the contents to your desired installation directory.
-   - B. Clone the repo with the git client of your choice by entering the following command:
-     - `git clone https://github.com/schlopp96/PyFiTransfer/releases/latest/`
+   - **Either:**
+
+     - **A.** Download source code `*.zip` archive from the PyFiTransfer GitHub repo ["releases"](https://github.com/schlopp96/PyFiTransfer/releases/latest) tab, and extract the contents to your desired installation directory.
+
+   - **Or:**
+
+     - **B.** Clone the repo with the git client of your choice by entering the following command:
+
+       - ```shell
+         git clone https://github.com/schlopp96/PyFiTransfer/releases/latest/
+         ```
 
 2. Navigate to directory containing extracted contents, and open said directory within a terminal.
 
 3. Install all dependencies for this package by entering the following command:
-   - `pip install -r requirements.txt`
 
-- **Optional:**
-
-  - Move the `"PyFiTransfer-vx.x.x"` directory to your global Python 3rd-party package installation directory to be able to import `PyFileTransfer` like any other module:
-    - `"path/to/python/Lib/site-packages/HERE"`
+   - ```shell
+     pip install -r requirements.txt
+     ```
 
 - Done!
 
 ---
 
-## Usage
+## **Using PyFiTransfer**
 
-- In an open python environment, simply import the PyFiTransfer package and run the `main.py` script like so:
+### **PyFiTransfer GUI**
 
-  ```python
-  >>> import PyFiTransfer
+- _If you **HAVE** installed **`PyFiTransfer`** via pip, you can launch the PyFiTransfer GUI by entering the following command:_
 
-  >>> PyFiTransfer.main()
+  ```shell
+  pyfitransfer-gui
   ```
 
-- _If you have **NOT** installed **PyFiTransfer** using `pip`:_
+- _If you **HAVE NOT** installed **`PyFiTransfer`** using `pip`:_
 
   - Open the python script titled `main.py` located within the installation directory:
-    - `"~PyFiTransfer/PyFiTransfer/main.py"`
+    - `"~/PyFiTransfer/main.py"`
+
+1. To select the source directory containing the files you wish to transfer, click the "Browse" button located in the top row.
+
+2. To select the destination directory you wish to transfer the files to, click the "Browse" button located in the middle row.
+
+3. Fill out the "file type" input field in the third row to choose what file-type to transfer
+
+4. Click the `"Start Transfer"` button.
+
+   - The transfer will begin, and the progress will be displayed in the log output box.
+
+![GUI Screenshot](img/PyFiTransfer-GUI.png)
+
+---
+
+### **PyFiTransfer CLI**
+
+- _If you **HAVE** installed **`PyFiTransfer`** via pip, you can launch the PyFiTransfer CLI by entering the following command:_
+
+  ```shell
+  pyfitransfer-cli
+  ```
+
+- _If you **HAVE NOT** installed **`PyFiTransfer`** using `pip`:_
+
+  - Open the python script titled `CLI_main.py` located within the installation directory:
+    - `"~/PyFiTransfer/CLI_main.py"`
 
 1. Enter the file-path to the directory acting as the file transfer's destination.
 
@@ -72,9 +107,7 @@
 
 4. Finally, the user is prompted to press the `[ENTER]` key to exit the process.
 
----
-
-![CLI Screenshot](img/Screenshot%202022-01-24%20010344.png)
+![CLI Screenshot](img/PyFiTransfer-CLI.png)
 
 ---
 
