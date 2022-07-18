@@ -36,7 +36,7 @@ layout: list = [
                   button_color=('white', 'green'))
     ],
     [
-        sg.ProgressBar(max_value=50,
+        sg.ProgressBar(max_value=25,
                        size=(30, 10),
                        orientation='horizontal',
                        key='-ProgressBar-',

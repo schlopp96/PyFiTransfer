@@ -5,7 +5,7 @@ readme = pathlib.Path("readme.md").read_text()
 reqs = pathlib.Path("requirements.txt").read_text()
 setup(
     name="PyFiTransfer",
-    version="0.4.0",
+    version="0.4.1",
     description=
     'Transfer files with specified extension-type from a starting directory to desired target directory.',
     url='https://github.com/schlopp96/PyFiTransfer',

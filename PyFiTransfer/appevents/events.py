@@ -1,5 +1,6 @@
 import os
-from os import PathLike
+from os.path import dirname
+from os import PathLike, chdir
 from os import scandir as lsContents
 from os.path import basename as base
 from shutil import move
@@ -9,11 +10,14 @@ from genericpath import isdir
 from PyFiTransfer.applogger.logger import _LogGenerator
 from PyLoadBar import PyLoadBar
 
-logger = _LogGenerator(name='transferlog', filename='transferlog')
+chdir(dirname(dirname(__file__)))
 
-loader = PyLoadBar()
+txt_seq = PyLoadBar(bar_sequence=False)
+bar_seq = PyLoadBar()
 
-BORDER: str = '\n='.ljust(50, '=')
+logger = _LogGenerator('transferlog', 'Program')
+
+BORDER: str = '\n<='.ljust(50, '=') + '=>'
 
 
 class FileTransfer:
@@ -33,7 +37,7 @@ class FileTransfer:
         - :func:`__verify_dir(self, filepath: PathLike | str) -> bool`
             - Verify if given filepath is a directory.
 
-        - :func:`transfer(self, src_dir: str | os.PathLike, target_dir: str | os.PathLike, file_ext: str | os.PathLike) -> bool`
+        - :func:`transfer(self, src_dir: str | PathLike, target_dir: str | PathLike, file_ext: str | PathLike) -> bool | int`
             - Transfer files from source directory to target directory.
     """
 
@@ -78,7 +82,7 @@ class FileTransfer:
 
         :param filepath: path to directory.
         :type filepath: :class:`PathLike` | :class:`str`
-        :return: :bool:`True` if directory exists, :bool:`False` if not.
+        :return: `True` if directory exists, `False` if not.
         :rtype: :class:`bool`
         """
         try:
@@ -86,20 +90,20 @@ class FileTransfer:
                 f'Verifying directory of given file location:\n>> "{filepath}"...'
             )
             if isdir(filepath):
-                loader.load(
-                    f'\nVerifying file transfer destination:\n>> "{filepath}"',
-                    "\nDirectory verified successfully!",
-                    enable_display=False,
-                )
+                txt_seq.start(
+                    f'Verifying file transfer destination: "{filepath}"',
+                    "Directory verified successfully!",
+                    iter_total=5,
+                    txt_seq_speed=0.25)
                 logger.info(
                     f"Filepath \"{filepath}\" verified successfully!\n")
                 return True
             else:
-                loader.load(
-                    f'\nVerifying file transfer destination:\n>> "{filepath}"',
+                txt_seq.start(
+                    f'Verifying file transfer destination: "{filepath}"',
                     f'>> ERROR:\n>> Directory: "{filepath}" could NOT be verified.',
-                    enable_display=False,
-                )
+                    iter_total=5,
+                    txt_seq_speed=0.25)
                 logger.warning(
                     f'Directory: "{filepath}" could NOT be verified...\n')
                 return False
@@ -107,25 +111,21 @@ class FileTransfer:
             logger.exception(
                 f"Something went wrong during directory verification...\n>> {error}"
             )
-            logger.info(
-                f">> ERROR:\nSomething went wrong during directory verification...\n>> {error.__traceback__}"
-            )
             return False
 
-    def transfer(self, src_dir: str | os.PathLike,
-                 target_dir: str | os.PathLike, file_ext: str | os.PathLike,
-                 gui: bool) -> bool | int:
+    def transfer(self, src_dir: str | PathLike, target_dir: str | PathLike,
+                 file_ext: str | PathLike, gui: bool) -> bool | int:
         """Transfer files of a given extension from source directory to target destination.
 
         ---
 
         :param src_dir: starting location of transfer
-        :type src_dir: :class:`str` | :class:`os.PathLike`
+        :type src_dir: :class:`str` | :class:`PathLike`
         :param target_dir: file transfer destination
-        :type target_dir: :class:`str` | :class:`os.PathLike`
+        :type target_dir: :class:`str` | :class:`PathLike`
         :param file_ext: extension of files to be transferred
-        :type file_ext: :class:`str` | :class:`os.PathLike`
-        :return: :bool:`True` if transfer was successful, :bool:`False` if not.
+        :type file_ext: :class:`str` | :class:`PathLike`
+        :return: if :param:`gui` is `True`, return number of files transferred, else return `True` or `False` depending if transfer was successful or not.
         :rtype: :class:`bool` | :class:`int`
         """
 
@@ -161,12 +161,14 @@ class FileTransfer:
                     )
                     return len(files)
 
-                loader.load(
+                bar_seq.start(
                     msg_loading=
                     f'> Transferring all files with extension ".{file_ext}" to:\n>> "{target_dir}"',
                     msg_complete=
                     f'> {len(files)} files successfully copied to new location:\n>> {files}',
-                    time=len(files))
+                    min_iter=0.01,
+                    max_iter=0.2,
+                    iter_total=len(files))
 
                 logger.info(
                     f'{len(files)} files successfully copied to new location:\n>> "{target_dir}"\n'
@@ -181,11 +183,11 @@ class FileTransfer:
                 return False
 
 
-def change_ext(path: str | os.PathLike, curext: str, newext: str) -> None:
+def change_ext(path: str | PathLike, curext: str, newext: str) -> None:
     """Change extension of all files of a given type.
 
     :param path: path to containing directory of files to be changed
-    :type path: :class:`str` | :class:`os.PathLike`
+    :type path: :class:`str` | :class:`PathLike`
     :param curext: extension of files to be changed
     :type curext: :class:`str`
     :param newext: extension to change files to.
