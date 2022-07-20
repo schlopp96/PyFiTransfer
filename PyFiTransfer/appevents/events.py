@@ -1,8 +1,8 @@
 import os
-from os.path import dirname
 from os import PathLike, chdir
 from os import scandir as lsContents
 from os.path import basename as base
+from os.path import dirname
 from shutil import move
 from typing import NoReturn
 
@@ -20,10 +20,10 @@ logger = _LogGenerator('transferlog', 'Program')
 BORDER: str = '\n<='.ljust(50, '=') + '=>'
 
 
-class FileTransfer:
+class TransferOps:
     """Class containing various methods related to transferring files.
 
-    - Contains the following class methods:
+    - Contains the following static methods:
 
         - :func:`__get_src_dir(self) -> str`
             - Get starting location of files to be transferred.
@@ -41,7 +41,8 @@ class FileTransfer:
             - Transfer files from source directory to target directory.
     """
 
-    def _get_src_dir(self) -> str:
+    @staticmethod
+    def _get_src_dir() -> str:
         """Get starting location of files to be transferred.
 
         ---
@@ -53,7 +54,8 @@ class FileTransfer:
             "\nEnter filepath of the directory containing the files to be transferred:\n> "
         )
 
-    def _get_dest_dir(self) -> str:
+    @staticmethod
+    def _get_dest_dir() -> str:
         """Get target destination for file transfer.
 
         ---
@@ -63,7 +65,8 @@ class FileTransfer:
         """
         return input("\nEnter destination to transfer files:\n> ")
 
-    def _get_ext(self) -> str:
+    @staticmethod
+    def _get_ext() -> str:
         """Get extension of files to transfer.
 
         ---
@@ -75,7 +78,8 @@ class FileTransfer:
             '\nEnter type/extension of the files to transfer.\n- Only include letters of extension.\n\t\t- Correct Example (without quotes): "mp4"\n>> '
         )
 
-    def _verify_dir(self, filepath: PathLike | str) -> bool:
+    @staticmethod
+    def _verify_dir(filepath: PathLike | str) -> bool:
         """Verify if given filepath is a directory.
 
         ---
@@ -85,6 +89,7 @@ class FileTransfer:
         :return: `True` if directory exists, `False` if not.
         :rtype: :class:`bool`
         """
+
         try:
             logger.info(
                 f'Verifying directory of given file location:\n>> "{filepath}"...'
@@ -93,8 +98,8 @@ class FileTransfer:
                 txt_seq.start(
                     f'Verifying file transfer destination: "{filepath}"',
                     "Directory verified successfully!",
-                    iter_total=5,
-                    txt_seq_speed=0.25)
+                    iter_total=3,
+                    txt_seq_speed=0.5)
                 logger.info(
                     f"Filepath \"{filepath}\" verified successfully!\n")
                 return True
@@ -102,8 +107,8 @@ class FileTransfer:
                 txt_seq.start(
                     f'Verifying file transfer destination: "{filepath}"',
                     f'>> ERROR:\n>> Directory: "{filepath}" could NOT be verified.',
-                    iter_total=5,
-                    txt_seq_speed=0.25)
+                    iter_total=3,
+                    txt_seq_speed=0.5)
                 logger.warning(
                     f'Directory: "{filepath}" could NOT be verified...\n')
                 return False
@@ -113,7 +118,8 @@ class FileTransfer:
             )
             return False
 
-    def transfer(self, src_dir: str | PathLike, target_dir: str | PathLike,
+    @staticmethod
+    def transfer(src_dir: str | PathLike, target_dir: str | PathLike,
                  file_ext: str | PathLike, gui: bool) -> bool | int:
         """Transfer files of a given extension from source directory to target destination.
 
@@ -133,9 +139,11 @@ class FileTransfer:
 
         logger.info("> Transferring files now...\n")
 
-        with lsContents(str(src_dir)) as dirFiles:
+        with lsContents(str(src_dir)) as dirFiles:  # Get files in directory
             try:
-                for file in dirFiles:
+                for file in dirFiles:  # Iterate through files
+
+                    # Transfer files of given extension
                     if file.is_file() and (not file.name.startswith(".") and
                                            file.name.endswith(f".{file_ext}")):
                         logger.info(
@@ -182,23 +190,26 @@ class FileTransfer:
                 )
                 return False
 
+    @staticmethod
+    def change_ext(path: str | PathLike, curext: str, newext: str) -> None:
+        """Change extension of files of a given type.
 
-def change_ext(path: str | PathLike, curext: str, newext: str) -> None:
-    """Change extension of all files of a given type.
+        ---
 
-    :param path: path to containing directory of files to be changed
-    :type path: :class:`str` | :class:`PathLike`
-    :param curext: extension of files to be changed
-    :type curext: :class:`str`
-    :param newext: extension to change files to.
-    :type newext: :class:`str`
-    :return: change extension of all files of a certain type in directory.
-    :rtype: None
-    """
-    for filename in os.listdir(os.path.dirname(os.path.abspath(path))):
-        base_file, ext = os.path.splitext(filename)
-        if ext == curext:
-            return os.rename(filename, base_file + newext)
+        :param path: path to directory containing files to be changed
+        :type path: :class:`str` | :class:`PathLike`
+        :param curext: extension of files to be changed
+        :type curext: :class:`str`
+        :param newext: new extension to apply to files
+        :type newext: :class:`str`
+        :return: replacement of files with old file-types with new extension
+        :rtype: None
+        """
+
+        for filename in os.listdir(os.path.dirname(os.path.abspath(path))):
+            base_file, ext = os.path.splitext(filename)
+            if ext == curext:
+                return os.rename(filename, base_file + newext)
 
 
 class Exit:
@@ -257,5 +268,5 @@ class Exit:
         return exit(self.exit_code)
 
 
-events = FileTransfer()
+events = TransferOps()
 exit_program = Exit()
