@@ -46,15 +46,16 @@ def GUI_loop() -> None:
                                             vals['-TargetFolderInput-'],
                                             vals['-FileExtensionInput-'],
                                             gui=True)
-
-            if transfer > 0:  # Enable progress bar
-                for _ in range(25):
-                    window.refresh()
-                    sleep(uniform(0.01, 0.2))
-                    window['-ProgressBar-'].update(_ + 1)
+            # Progress bar
+            if transfer > 0:
+                # Update current progress bar value
+                for _ in range(transfer):
+                    sleep(uniform(0.01, 0.2))  # Random delay
+                    window['-ProgressBar-'].update(_ + 1, transfer)
+                    window.refresh()  # Update changes in window
 
                 print(f'Successfully transferred {transfer} files!\n'
-                      )  # Log success
+                      )  # Output success message
 
             window['-ProgressBar-'].update(0)  # Reset progress bar
 
