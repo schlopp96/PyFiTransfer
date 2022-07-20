@@ -7,8 +7,7 @@ from os.path import dirname
 sys.path.insert(0, dirname(
     dirname(__file__)))  # Ensure main module can be found by Python.
 
-# > Set CWD:
-chdir(dirname(__file__))
+chdir(dirname(__file__))  # Set cwd to main module directory.
 
 from PyFiTransfer.appevents.CLI_loop import CLI_loop
 from PyFiTransfer.appevents.events import logger

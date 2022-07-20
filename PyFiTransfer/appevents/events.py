@@ -1,16 +1,13 @@
 import os
-from os import PathLike, chdir
+from os import PathLike
 from os import scandir as lsContents
 from os.path import basename as base
-from os.path import dirname
 from shutil import move
 from typing import NoReturn
 
 from genericpath import isdir
 from PyFiTransfer.applogger.logger import _LogGenerator
 from PyLoadBar import PyLoadBar
-
-chdir(dirname(dirname(__file__)))
 
 txt_seq = PyLoadBar(bar_sequence=False)
 bar_seq = PyLoadBar()
