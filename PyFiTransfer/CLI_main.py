@@ -14,7 +14,7 @@ from PyFiTransfer.appevents.events import logger
 
 
 def CLI_main() -> None:
-    """CLI entry point.
+    """PyFiTransfer-CLI entry point.
 
     ---
 
@@ -22,7 +22,7 @@ def CLI_main() -> None:
     :rtype: None
     """
 
-    logger.info("PyFiTransfer-CLI Started...\n")
+    logger.info("Starting PyFiTransfer-CLI...\n")
     return CLI_loop()
 
 

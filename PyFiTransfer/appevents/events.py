@@ -12,7 +12,7 @@ from PyLoadBar import PyLoadBar
 txt_seq = PyLoadBar(bar_sequence=False)
 bar_seq = PyLoadBar()
 
-logger = _LogGenerator('transferlog', 'Program')
+logger = _LogGenerator('FileTransfers', 'Program')
 
 BORDER: str = '\n<='.ljust(50, '=') + '=>'
 

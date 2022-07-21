@@ -14,7 +14,7 @@ from PyFiTransfer.appevents.GUI_loop import GUI_loop
 
 
 def main() -> None:
-    """GUI entry point.
+    """PyFiTransfer-GUI entry point.
 
     ---
 
