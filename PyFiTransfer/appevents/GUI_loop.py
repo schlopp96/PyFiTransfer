@@ -50,7 +50,7 @@ def GUI_loop() -> None:
             if transfer > 0:
                 # Update current progress bar value
                 for _ in range(transfer):
-                    sleep(uniform(0.01, 0.2))  # Random delay
+                    sleep(uniform(0.01, 0.1))  # Random delay
                     window['-ProgressBar-'].update(_ + 1, transfer)
                     window.refresh()  # Update changes in window
 
