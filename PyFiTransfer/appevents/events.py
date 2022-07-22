@@ -22,20 +22,23 @@ class TransferOps:
 
     - Contains the following static methods:
 
-        - :func:`__get_src_dir(self) -> str`
+        - :func:`_get_src_dir(self) -> str`
             - Get starting location of files to be transferred.
 
-        - :func:`__get_dest_dir(self) -> str`
+        - :func:`_get_dest_dir(self) -> str`
             - Get target destination for file transfer.
 
-        - :func:`__get_ext(self) -> str`
+        - :func:`_get_ext(self) -> str`
             - Get extension of files to transfer.
 
-        - :func:`__verify_dir(self, filepath: PathLike | str) -> bool`
+        - :func:`_verify_dir(self, filepath: PathLike | str) -> bool`
             - Verify if given filepath is a directory.
 
         - :func:`transfer(self, src_dir: str | PathLike, target_dir: str | PathLike, file_ext: str | PathLike) -> bool | int`
             - Transfer files from source directory to target directory.
+
+        - :func:`change_ext(path: str | PathLike, curext: str, newext: str) -> None`
+            - Replace extension of files with a given extension.
     """
 
     @staticmethod
@@ -189,7 +192,7 @@ class TransferOps:
 
     @staticmethod
     def change_ext(path: str | PathLike, curext: str, newext: str) -> None:
-        """Change extension of files of a given type.
+        """Replace extension of files with a given extension.
 
         ---
 
@@ -199,7 +202,7 @@ class TransferOps:
         :type curext: :class:`str`
         :param newext: new extension to apply to files
         :type newext: :class:`str`
-        :return: replacement of files with old file-types with new extension
+        :return: files with new extension
         :rtype: None
         """
 
