@@ -1,3 +1,4 @@
 PyLoadBar>=0.1.0
 PySimpleGUI>=4.60.1
 setuptools>=58.1.0
+tqdm>=4.66.3 # not directly required, pinned by Snyk to avoid a vulnerability
